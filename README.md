@@ -1,4 +1,4 @@
-# My Node.js Application with MongoDB
+# Deploying My Node.js Application with MongoDB and Mongo-express on EC2 on AWS server
 
 ## Overview
 
