@@ -1,0 +1,6 @@
+# Ignore the hosts file
+hosts
+
+# Ignore the my-depi.pem file
+my-depi.pem
+my-depi.pemZone.Identifier
