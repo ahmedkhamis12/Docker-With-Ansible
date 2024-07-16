@@ -1,72 +1,83 @@
-## demo app - developing with Docker
+# My Node.js Application with MongoDB
 
-This demo app shows a simple user profile app set up using 
-- index.html with pure js and css styles
-- nodejs backend with express module
-- mongodb for data storage
+## Overview
 
-All components are docker-based
+This project is a **Node.js** application that uses **MongoDB** to store user profiles. The application serves static files, including an HTML file and an image, and provides endpoints for updating and fetching user profiles. It can run locally, in a Docker container, or as part of a Docker Compose setup.
 
-### With Docker
+## Table of Contents
 
-#### To start the application
+- **Overview**
+- **Prerequisites**
+- **Installation**
+  - *Local Setup*
+  - *Docker Setup*
+- **Usage**
+- **Endpoints**
+- **Docker**
+  - *Running with Docker*
+  - *Running with Docker Compose*
+- **Contributing**
+- **License**
 
-Step 1: Create docker network
+## Prerequisites
 
-    docker network create mongo-network 
+To run this application locally or in a Docker container, you need the following:
 
-Step 2: start mongodb 
+- Node.js
+- MongoDB
+- Docker (optional, for running with Docker)
+- Docker Compose (optional, for running with Docker Compose)
 
-    docker run -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb --net mongo-network mongo    
+## Installation
 
-Step 3: start mongo-express
+### Local Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+2. Install dependencies:
+   ```bash
+   npm install
+
+### Docker Setup
+
+Docker Setup
+Build the Docker image (if not already built): 
+    ```bash
     
-    docker run -d -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password --net mongo-network --name mongo-express -e ME_CONFIG_MONGODB_SERVER=mongodb mongo-express   
+    docker build -t my-node-app .
 
-_NOTE: creating docker-network in optional. You can start both containers in a default network. In this case, just emit `--net` flag in `docker run` command_
+## Run the Docker container:
 
-Step 4: open mongo-express from browser
-
-    http://localhost:8081
-
-Step 5: create `user-account` _db_ and `users` _collection_ in mongo-express
-
-Step 6: Start your nodejs application locally - go to `app` directory of project 
-
-    cd app
-    npm install 
-    node server.js
+    ```bash
     
-Step 7: Access you nodejs application UI from browser
+        docker run -p 3000:3000 -e MONGO_URL=mongodb://admin:password@host.docker.internal:27017 my-node-app
 
-    http://localhost:3000
+## Usage
+Ensure MongoDB is running and accessible.
 
-### With Docker Compose
+Set the environment variable MONGO_URL for MongoDB connection (if different from the default).
 
-#### To start the application
+## Start the application:
 
-Step 1: start mongodb and mongo-express
+ ```bash
+     npm start
+    Open your browser and navigate to http://localhost:3000.
 
-    docker-compose -f docker-compose.yaml up
-    
-_You can access the mongo-express under localhost:8080 from your browser_
-    
-Step 2: in mongo-express UI - create a new database "my-db"
+## Docker
+Running with Docker
+Build the Docker image (if not already built):
 
-Step 3: in mongo-express UI - create a new collection "users" in the database "my-db"       
-    
-Step 4: start node server 
+    ```bash
+docker build -t my-node-app .
 
-    cd app
-    npm install
-    node server.js
-    
-Step 5: access the nodejs application from browser 
+## Run the Docker container:
 
-    http://localhost:3000
+    ```bash
+docker run -p 3000:3000 -e MONGO_URL=mongodb://admin:password@host.docker.internal:27017 my-node-app
 
-#### To build a docker image from the application
-
-    docker build -t my-app:1.0 .       
-    
-The dot "." at the end of the command denotes location of the Dockerfile.
+## Running with Docker Compose
+Ensure Docker Compose is installed.
+Create a docker-compose.yml file in the root directory:
