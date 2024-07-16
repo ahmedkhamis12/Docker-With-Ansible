@@ -1,7 +1,7 @@
 ---
 
-- name: Install docker
-  hosts: docker_server
+- name: Install and start docker and docker-compose
+  hosts: docker_server 
   become: yes
   tasks:
     - name: install docker
@@ -10,11 +10,38 @@
         update_cache: yes
         state: present
 
-- name: Start docker
-  hosts: docker_server
-  become: yes
-  tasks:
-    - name: start docker
+    - name: Start docker
       systemd:
         name: docker
-        state: started      
+        state: started 
+
+    - name: add ec2-user to docker group
+      user:
+        name: ec2-user
+        group: docker
+        append: yes
+
+    - name: reconnect to the server session
+      meta: reset_connection  
+
+    - name: install docker-compose 
+      get_url:
+        url: https://github.com/docker/compose/releases/latest/download/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: +x   
+
+
+
+
+- name: copy the docker-compose file
+  hosts: docker_server
+  tasks:
+    - name: copy-docker-compose file
+      copy:
+        src: ./docker-compose.yaml
+        dest: /home/ec2-user  
+                 
+    - name: Run docker-compose up
+      shell: docker-compose up -d
+      args:
+        chdir: /home/ec2-user
